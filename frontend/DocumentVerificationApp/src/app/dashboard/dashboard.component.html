@@ -1,0 +1,38 @@
+<div class="container">
+  <h2 class="text-center my-4">Document Dashboard</h2>
+
+  <div *ngIf="documents.length > 0; else noDocuments">
+    <table class="table table-striped table-hover">
+      <thead class="table-dark">
+        <tr>
+          <th scope="col">ID</th>
+          <th scope="col">Title</th>
+          <th scope="col">Status</th>
+          <th scope="col">Created At</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let doc of documents">
+          <td>{{ doc.id }}</td>
+          <td>{{ doc.title }}</td>
+          <td>
+            <span [ngClass]="{
+              'badge bg-success': doc.status === 'Verified',
+              'badge bg-warning': doc.status === 'Pending',
+              'badge bg-danger': doc.status === 'Rejected'
+            }">
+              {{ doc.status }}
+            </span>
+          </td>
+          <td>{{ doc.createdAt | date: 'medium' }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <ng-template #noDocuments>
+    <div class="alert alert-info text-center">
+      No documents found.
+    </div>
+  </ng-template>
+</div>

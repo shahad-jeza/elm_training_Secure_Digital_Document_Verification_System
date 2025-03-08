@@ -5,6 +5,6 @@ namespace DocumentVerificationApi.Models
         public int DocumentId { get; set; }
         public int VerifiedByUserId { get; set; }
         public DateTime Timestamp { get; set; }
-        public string Status { get; set; }
+        public string Status { get; set; } // e.g., Verified, Rejected
     }
 }

@@ -1,0 +1,33 @@
+<div class="container">
+  <h2 class="text-center my-4">Upload Document</h2>
+
+  <div class="card shadow p-4">
+    <form [formGroup]="uploadForm" (ngSubmit)="onSubmit()">
+      <!-- Title Field -->
+      <div class="mb-3">
+        <label for="title" class="form-label">Title</label>
+        <input id="title" formControlName="title" class="form-control" placeholder="Enter document title" />
+        <div *ngIf="uploadForm.get('title')?.invalid && uploadForm.get('title')?.touched" class="text-danger">
+          Title is required.
+        </div>
+      </div>
+
+      <!-- File Field -->
+      <div class="mb-3">
+        <label for="file" class="form-label">File</label>
+        <input type="file" id="file" class="form-control" (change)="onFileChange($event)" />
+        <div *ngIf="uploadForm.get('file')?.invalid && uploadForm.get('file')?.touched" class="text-danger">
+          File is required.
+        </div>
+      </div>
+
+      <!-- Submit Button -->
+      <button type="submit" class="btn btn-primary w-100" [disabled]="uploadForm.invalid">Upload</button>
+    </form>
+
+    <!-- Upload Success Message -->
+    <div *ngIf="uploadSuccess" class="alert alert-success mt-3">
+      Document uploaded successfully!
+    </div>
+  </div>
+</div>

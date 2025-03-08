@@ -27,59 +27,77 @@ namespace DocumentVerificationApi.Controllers
         [HttpPost]
         public async Task<ActionResult> VerifyDocument([FromBody] VerificationLogDto logDto)
         {
-            if (logDto == null)
+            try
             {
-                return BadRequest("Verification log data is null.");
-            }
-
-            // Map VerificationLogDto to VerificationLog
-            var log = new VerificationLog
-            {
-                DocumentId = logDto.DocumentId,
-                VerifiedByUserId = logDto.VerifiedByUserId,
-                Timestamp = logDto.Timestamp,
-                Status = logDto.Status
-            };
-
-            // Log time for Dapper
-            var stopwatchDapper = Stopwatch.StartNew();
-            using (IDbConnection dbConnection = new SqliteConnection(_connectionString))
-            {
-                dbConnection.Open();
-
-                // Insert the verification log using Dapper
-                var query = @"
-                    INSERT INTO VerificationLogs (DocumentId, VerifiedByUserId, Timestamp, Status)
-                    VALUES (@DocumentId, @VerifiedByUserId, @Timestamp, @Status)";
-
-                await dbConnection.ExecuteAsync(query, new
+                if (logDto == null)
                 {
-                    log.DocumentId,
-                    log.VerifiedByUserId,
-                    log.Timestamp,
-                    log.Status
+                    return BadRequest("Verification log data is null.");
+                }
+
+                // Validate the required fields
+                if (string.IsNullOrEmpty(logDto.Status))
+                {
+                    return BadRequest("The Status field is required.");
+                }
+
+                // Map VerificationLogDto to VerificationLog
+                var log = new VerificationLog
+                {
+                    DocumentId = logDto.DocumentId,
+                    VerifiedByUserId = logDto.VerifiedByUserId,
+                    Timestamp = logDto.Timestamp,
+                    Status = logDto.Status
+                };
+
+                // Log time for Dapper
+                var stopwatchDapper = Stopwatch.StartNew();
+                using (IDbConnection dbConnection = new SqliteConnection(_connectionString))
+                {
+                    dbConnection.Open();
+
+                    // Insert the verification log using Dapper
+                    var query = @"
+                        INSERT INTO VerificationLogs (DocumentId, VerifiedByUserId, Timestamp, Status)
+                        VALUES (@DocumentId, @VerifiedByUserId, @Timestamp, @Status)";
+
+                    await dbConnection.ExecuteAsync(query, new
+                    {
+                        log.DocumentId,
+                        log.VerifiedByUserId,
+                        log.Timestamp,
+                        log.Status
+                    });
+                }
+                stopwatchDapper.Stop();
+                var dapperTime = stopwatchDapper.ElapsedMilliseconds;
+
+                // Log time for EF Core
+                var stopwatchEf = Stopwatch.StartNew();
+                _context.VerificationLogs.Add(log);
+                await _context.SaveChangesAsync();
+                stopwatchEf.Stop();
+                var efTime = stopwatchEf.ElapsedMilliseconds;
+
+                // Log the results
+                Console.WriteLine($"Dapper Execution Time: {dapperTime} ms");
+                Console.WriteLine($"EF Core Execution Time: {efTime} ms");
+
+                return Ok(new
+                {
+                    Message = "Document verified successfully.",
+                    DapperTime = dapperTime,
+                    EfCoreTime = efTime
                 });
             }
-            stopwatchDapper.Stop();
-            var dapperTime = stopwatchDapper.ElapsedMilliseconds;
-
-            // Log time for EF Core
-            var stopwatchEf = Stopwatch.StartNew();
-            _context.VerificationLogs.Add(log);
-            await _context.SaveChangesAsync();
-            stopwatchEf.Stop();
-            var efTime = stopwatchEf.ElapsedMilliseconds;
-
-            // Log the results
-            Console.WriteLine($"Dapper Execution Time: {dapperTime} ms");
-            Console.WriteLine($"EF Core Execution Time: {efTime} ms");
-
-            return Ok(new
+            catch (Exception ex)
             {
-                Message = "Document verified successfully.",
-                DapperTime = dapperTime,
-                EfCoreTime = efTime
-            });
+                // Log the exception
+                Console.WriteLine($"Error verifying document: {ex.Message}");
+                Console.WriteLine($"Stack Trace: {ex.StackTrace}");
+
+                // Return a 500 error with a meaningful message
+                return StatusCode(500, new { Message = "An error occurred while verifying the document.", Error = ex.Message });
+            }
         }
     }
 }

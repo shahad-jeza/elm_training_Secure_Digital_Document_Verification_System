@@ -1,0 +1,34 @@
+<div class="container">
+  <h2 class="text-center my-4">Verify Document</h2>
+
+  <div class="card shadow p-4">
+    <form [formGroup]="verificationForm" (ngSubmit)="onSubmit()">
+      <!-- Document ID Field -->
+      <div class="mb-3">
+        <label for="documentId" class="form-label">Document ID</label>
+        <input id="documentId" formControlName="documentId" class="form-control" placeholder="Enter document ID" />
+        <div *ngIf="verificationForm.get('documentId')?.invalid && verificationForm.get('documentId')?.touched" class="text-danger">
+          Document ID is required.
+        </div>
+      </div>
+
+      <!-- Verified By User ID Field -->
+      <div class="mb-3">
+        <label for="verifiedByUserId" class="form-label">Verified By User ID</label>
+        <input id="verifiedByUserId" formControlName="verifiedByUserId" class="form-control" placeholder="Enter verified by user ID" />
+        <div *ngIf="verificationForm.get('verifiedByUserId')?.invalid && verificationForm.get('verifiedByUserId')?.touched" class="text-danger">
+          Verified By User ID is required.
+        </div>
+      </div>
+
+      <!-- Submit Button -->
+      <button type="submit" class="btn btn-primary w-100" [disabled]="verificationForm.invalid">Verify</button>
+    </form>
+
+    <!-- Verification Result -->
+    <div *ngIf="verificationResult" class="alert alert-success mt-3">
+      <p><strong>Verification Status:</strong> {{ verificationResult.status }}</p>
+      <p><strong>Timestamp:</strong> {{ verificationResult.timestamp | date: 'medium' }}</p>
+    </div>
+  </div>
+</div>
