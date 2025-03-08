@@ -1,0 +1,12 @@
+{
+  "Version": 1,
+  "Hash": "FPUNDlUPx7KpJLZosC3NmJfKEA2hPQ5698hLCEinxcc=",
+  "Source": "DocumentVerificationApi",
+  "BasePath": "_content/DocumentVerificationApi",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": [],
+  "Endpoints": []
+}
