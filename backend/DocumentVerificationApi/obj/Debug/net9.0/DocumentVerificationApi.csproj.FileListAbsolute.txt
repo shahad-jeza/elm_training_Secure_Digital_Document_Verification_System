@@ -144,3 +144,7 @@
 /Users/shahadjeza/Documents/ELM_training/Secure_Digital_Document_Verification_System/backend/DocumentVerificationApi/obj/Debug/net9.0/DocumentVerificationApi.pdb
 /Users/shahadjeza/Documents/ELM_training/Secure_Digital_Document_Verification_System/backend/DocumentVerificationApi/obj/Debug/net9.0/DocumentVerificationApi.genruntimeconfig.cache
 /Users/shahadjeza/Documents/ELM_training/Secure_Digital_Document_Verification_System/backend/DocumentVerificationApi/obj/Debug/net9.0/ref/DocumentVerificationApi.dll
+/Users/shahadjeza/Documents/ELM_training/Secure_Digital_Document_Verification_System/backend/DocumentVerificationApi/obj/Debug/net9.0/DocumentVerificationApi.sourcelink.json
+/Users/shahadjeza/Documents/ELM_training/Secure_Digital_Document_Verification_System/backend/DocumentVerificationApi/bin/Debug/net9.0/Swashbuckle.AspNetCore.Swagger.dll
+/Users/shahadjeza/Documents/ELM_training/Secure_Digital_Document_Verification_System/backend/DocumentVerificationApi/bin/Debug/net9.0/Swashbuckle.AspNetCore.SwaggerGen.dll
+/Users/shahadjeza/Documents/ELM_training/Secure_Digital_Document_Verification_System/backend/DocumentVerificationApi/bin/Debug/net9.0/Swashbuckle.AspNetCore.SwaggerUI.dll
